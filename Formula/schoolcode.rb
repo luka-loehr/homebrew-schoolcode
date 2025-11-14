@@ -7,8 +7,8 @@
 class Schoolcode < Formula
   desc "Automated developer tool deployment for macOS Guest accounts"
   homepage "https://github.com/luka-loehr/SchoolCode"
-  url "https://github.com/luka-loehr/SchoolCode/archive/refs/tags/v3.0.0.tar.gz"
-  sha256 "661722ef85c5059b92b86cce1e130ee4d6991dbfe742c3c659baa15ea61092a0" # Will be calculated after creating release
+  url "https://github.com/luka-loehr/SchoolCode/archive/refs/tags/v3.0.1.tar.gz"
+  sha256 "" # Will be calculated after creating release - check GitHub Actions workflow output
   license "Apache-2.0"
   head "https://github.com/luka-loehr/SchoolCode.git", branch: "main"
 
@@ -21,14 +21,28 @@ class Schoolcode < Formula
     # Install all scripts to libexec/scripts
     libexec.install Dir["scripts"]
     
+    # Install version.txt to libexec
+    libexec.install "version.txt" if File.exist?("version.txt")
+    
     # Make all scripts executable
     Dir["#{libexec}/**/*.sh"].each { |f| chmod 0755, f }
+    
+    # Make main script executable
+    chmod 0755, bin/"schoolcode"
   end
 
   def post_install
     # Run SchoolCode installation script
     # This will perform full installation: compatibility check, system repair, tool installation, guest setup
-    system "sudo", "#{bin}/schoolcode"
+    ohai "Running SchoolCode installation..."
+    ohai "This requires sudo privileges and will set up Guest account tools."
+    
+    # Run with explicit error handling
+    unless system "sudo", "#{bin}/schoolcode", "--install"
+      opoo "SchoolCode installation encountered an issue."
+      opoo "You can manually complete installation by running:"
+      opoo "  sudo schoolcode --install"
+    end
   end
 
   def uninstall
