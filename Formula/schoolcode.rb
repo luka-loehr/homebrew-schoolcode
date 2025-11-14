@@ -8,7 +8,7 @@ class Schoolcode < Formula
   desc "Automated developer tool deployment for macOS Guest accounts"
   homepage "https://github.com/luka-loehr/schoolcode"
   url "https://github.com/luka-loehr/schoolcode/releases/download/v3.0.0/schoolcode-3.0.0.tar.gz"
-  sha256 "3213620f57d4cb2c180519cf48da8e9dcd4a187fb353e06078067d9a2564bd99" # Will be calculated after creating release
+  sha256 "e62a370376b85b1e4317d8c861152070e7c8a1fdaecddfb2c4e3463fad8c13c6" # Will be calculated after creating release
   license "Apache-2.0"
   head "https://github.com/luka-loehr/schoolcode.git", branch: "main"
 
